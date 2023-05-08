@@ -1,3 +1,4 @@
+
 #include <iostream>
 using namespace std;
 
@@ -5,171 +6,172 @@ template <class T>
 class BinaryTree
 {
 
-	struct node{
-		T value;
-		struct node* right;
-		struct node* left;
-	};
+    struct node{
+        T value;
+        struct node* right;
+        struct node* left;
+    };
 
 public:
-	BinaryTree();
-	~BinaryTree();
+    BinaryTree();
+    ~BinaryTree();
     void insert(T val);
-	void printPreOrder();//wrapper function
-	void printInOrder();//wrapper function
-	void printPostOrder();//wrapper function
-	int size();//wrapper function
-	bool lookup(T val);//wrapper function
+    void printPreOrder();//wrapper function
+    void printInOrder();//wrapper function
+    void printPostOrder();//wrapper function
+    int size();//wrapper function
+    bool lookup(T val);//wrapper function
     int height(void);//wrapper function
     int counts(void);//wrapper function
     void destroyTree(void);
+    int leafCount(void);
 
 
 private:
-	struct node*root=NULL;
-	int treeSize;
+    struct node*root=NULL;
+    int treeSize;
     int calculateHeight(struct node*rootNode);
-	 void insert(struct node** node, T val);
-	bool lookup(struct node* node, T val);
-	void printPreOrder(struct node* node);
-	void printInOrder(struct node* node);
-	void printPostOrder(struct node* node);
-	void deleteTree(struct node* node);
+     void insert(struct node** node, T val);
+    bool lookup(struct node* node, T val);
+    void printPreOrder(struct node* node);
+    void printInOrder(struct node* node);
+    void printPostOrder(struct node* node);
+    void deleteTree(struct node* node);
     int nodeCounts(struct node* rootNode);
     void destroySubTree(struct node* &);
+    int leafNodeCounts(struct node*);
     
 };
 
 template <class T>
 BinaryTree<T>::BinaryTree(){
-	this->root = NULL;
-	this->treeSize = 0;
+    this->root = NULL;
+    this->treeSize = 0;
     
     
 }
 
 template <class T>
 BinaryTree<T>::~BinaryTree(){
-	this->destroyTree();
+    this->destroyTree();
 }
 
 template <class T>
 int BinaryTree<T>::size(){
-	return this->treeSize;
+    return this->treeSize;
 }
 
 template <class T>
 void BinaryTree<T>::insert(T val){
     insert(&(this->root), val);
-	
+    
 } //insert
 
 
 template <class T>
 void BinaryTree<T>::insert(struct node** node, T val){
 
-	if(*node == NULL)	{
-		struct node* tmp = new struct node;
-		tmp->value = val;
-		tmp->left=NULL;
-		tmp->right = NULL;
-		*node = tmp;
+    if(*node == NULL)    {
+        struct node* tmp = new struct node;
+        tmp->value = val;
+        tmp->left=NULL;
+        tmp->right = NULL;
+        *node = tmp;
 
-		this->treeSize++;
-	}else{
-		if(val > (*node)->value){
-			insert(&(*node)->right, val);
-		}else{
-			insert(&(*node)->left, val);
-		}
-	}//else
+        this->treeSize++;
+    }else{
+        if(val > (*node)->value){
+            insert(&(*node)->right, val);
+        }else{
+            insert(&(*node)->left, val);
+        }
+    }//else
     
 }
 
 template <class T>
 void BinaryTree<T>::printInOrder(){
-	printInOrder(this->root);
-	cout<<endl;
+    printInOrder(this->root);
+    cout<<endl;
 }
 
 template <class T>
 void BinaryTree<T>::printInOrder(struct node* node){
-	if(node != NULL){
-		printInOrder(node->left);
-		cout << node->value << ", ";
-		printInOrder(node->right);
-	}
+    if(node != NULL){
+        printInOrder(node->left);
+        cout << node->value << ", ";
+        printInOrder(node->right);
+    }
 }
 
 template <class T>
 void BinaryTree<T>::printPreOrder(){
-	printPreOrder(this->root);
-	cout << endl;
+    printPreOrder(this->root);
+    cout << endl;
 }
 
 
 template <class T>
 void BinaryTree<T>::printPreOrder(struct node* node){
-	if(node != NULL)	{
-		cout << node->value << ", ";
-		printPreOrder(node->left);
-		printPreOrder(node->right);
-	}
+    if(node != NULL)    {
+        cout << node->value << ", ";
+        printPreOrder(node->left);
+        printPreOrder(node->right);
+    }
 }
 
 template <class T>
 void BinaryTree<T>::printPostOrder(){
-	printPostOrder(this->root);
-	cout << endl;
+    printPostOrder(this->root);
+    cout << endl;
 }
 
 template <class T>
 void BinaryTree<T>::printPostOrder(struct node* node){
-	if(node != NULL){
-		printPostOrder(node->left);
-		printPostOrder(node->right);
-		cout << node->value << ", ";
-	}
+    if(node != NULL){
+        printPostOrder(node->left);
+        printPostOrder(node->right);
+        cout << node->value << ", ";
+    }
 }
-
 
 
 template <class T>
 void BinaryTree<T>::deleteTree(struct node* node){
-	if(node != NULL){
-		deleteTree(node->left);
-		deleteTree(node->right);
-		delete node;
-	}
+    if(node != NULL){
+        deleteTree(node->left);
+        deleteTree(node->right);
+        delete node;
+    }
 }
 
 template <class T>
 bool BinaryTree<T>::lookup(T val){
-	return lookup(this->root, val);
+    return lookup(this->root, val);
 }
 
 template <class T>
 bool BinaryTree<T>::lookup(struct node* node, T val){
-	if(node == NULL){
-		return false;
-	}//if
+    if(node == NULL){
+        return false;
+    }//if
     else{
-		if(val == node->value){
-			return true;
-		}//if
+        if(val == node->value){
+            return true;
+        }//if
 
-		if(val > node->value){
-			return lookup(node->right, val);
-		}//if
+        if(val > node->value){
+            return lookup(node->right, val);
+        }//if
         else{
-			return lookup(node->left, val);
-		}//else
-	}//else
+            return lookup(node->left, val);
+        }//else
+    }//else
 
 }
 template <class T>
 int BinaryTree<T>::height(void){
-	calculateHeight(this->root);
+    return calculateHeight(this->root);
 }
 
 template<class T>
@@ -180,11 +182,11 @@ int BinaryTree<T>::calculateHeight(struct node*rootNode){
 
 if(rootNode == NULL) {
 
-		return 0;
+        return 0;
 
-	}//if
+    }//if
 
-	else{
+    else{
         leftHeight=calculateHeight(rootNode->left);
         rightHeight=calculateHeight(rootNode->right);
         if(rightHeight > leftHeight){
@@ -196,14 +198,14 @@ if(rootNode == NULL) {
             return ++leftHeight;
         }//else
 
-	}//else
+    }//else
 
 
 }//end
 
 template <class T>
 int BinaryTree<T>::counts(void){
-	nodeCounts(this->root);
+    return nodeCounts(this->root);
 }
 
 template <class T>
@@ -219,24 +221,41 @@ int BinaryTree<T>::nodeCounts(struct node*rootNode){
 }//end NodeCount
 template <class T>
 void BinaryTree<T>::destroyTree(void) {
-	destroySubTree(this->root);
+    destroySubTree(this->root);
 } //clear
 template <class T>
 void BinaryTree<T>::destroySubTree(struct node* &rootNode) {
 
-	if (rootNode != NULL) {
-		destroySubTree(rootNode->left);
-		destroySubTree(rootNode->right);
-		delete rootNode;
-	}//if
-}		
+    if (rootNode != NULL) {
+        destroySubTree(rootNode->left);
+        destroySubTree(rootNode->right);
+        delete rootNode;
+    }//if
+}
 
-int main(){
+template <class  T>
+int BinaryTree<T>::leafCount(void){
+    return leafNodeCounts(this->root);
 
-	BinaryTree<int> myIntTree;
+}
+
+template<class T>
+int BinaryTree<T>::leafNodeCounts(struct node*rootNode){
+    if(rootNode == NULL)
+        return 0;
+    if(rootNode->left == NULL && rootNode->right == NULL)
+        return 1;
+    else
+        return leafNodeCounts(rootNode->left)+leafNodeCounts(rootNode->right);
+}
+
+int main(int argc, const char * argv[]){
+
+    BinaryTree<int> myIntTree;
 
     cout<<"Before inserting total tree height : "<<myIntTree.height()<<endl;
     cout<<"Before inserting total tree Nodes : "<<myIntTree.counts()<<endl;
+    cout<<"Before inserting total leafNode : "<<myIntTree.leafCount()<<endl;
     int n1=5;
     int n2=6;
     int n3=10;
@@ -244,9 +263,9 @@ int main(){
     int n5=13;
     int n6=2;
    
-	cout<<"Now inserting number: "<<n1<<endl;
+    cout<<"Now inserting number: "<<n1<<endl;
     myIntTree.insert(n1);
-	cout<<"Now inserting number: "<<n2<<endl;
+    cout<<"Now inserting number: "<<n2<<endl;
     myIntTree.insert(n2);
     cout<<"Now inserting number: "<<n3<<endl;
     myIntTree.insert(n3);
@@ -260,17 +279,18 @@ int main(){
     
     cout<<"Total tree height : "<<myIntTree.height()<<endl;
     cout<<"Total node counts : "<<myIntTree.counts()<<endl;
+    cout<<"Total leaf Node Counts: "<<myIntTree.leafCount()<<endl;
 
-	cout<<"Here is Post-order print "<<endl;
+    cout<<"Here is Post-order print "<<endl;
     myIntTree.printPostOrder();
     cout<<"Here is In-order print "<<endl;
-	myIntTree.printInOrder();
+    myIntTree.printInOrder();
      cout<<"Here is Pre-Order print "<<endl;
-	myIntTree.printPreOrder();
+    myIntTree.printPreOrder();
 
 cout << "Tree size: " << myIntTree.size()<<endl;
 
-	
-	
+    
+    
 }
 
